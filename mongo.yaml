@@ -1,6 +1,11 @@
-# apply file: kubectl apply -f mongo.yaml
-# show status: kubectly get all
-#              kubectly get pod
+# apply file: 
+#   kubectl apply -f mongo.yaml
+# show status:
+#   kubectl get all
+#   kubectl get pod
+# additional information:
+#   kubectl get pod -o wide
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,9 +36,23 @@ spec:
         - name: MONGO_INIT_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mongo-secret
+              name: mongodb-secret
               key: mongo-root-password
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
+---
+# kubectl get service
+# kubectl describe service mongodb-deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-deployment
+spec:
+  selector:
+    app: mongodb
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
