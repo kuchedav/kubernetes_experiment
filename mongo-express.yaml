@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo-express
+  labels:
+    app: mongo-express
 spec:
   replicas: 1
   selector:
@@ -15,10 +17,6 @@ spec:
       containers:
       - name: mongo-express
         image: mongo-express
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 8081
         env:
